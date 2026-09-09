@@ -1,48 +1,38 @@
 import os
 import subprocess
 
-# ==========================================
-# ชุดข้อมูลทดสอบสำหรับข้อสอบ ม.4 ชุดที่ 1
-# ==========================================
 TEST_CASES = {
     "Examination_1": [
-        {"input": "5\n10\n", "expected": "50"},
-        {"input": "7\n3\n", "expected": "21"}
+        {"input": "10\n5\n", "expected": "25"},
+        {"input": "6\n4\n", "expected": "12"}
     ],
     "Examination_2": [
-        {"input": "85\n", "expected": "A"},
-        {"input": "65\n", "expected": "C"},
-        {"input": "42\n", "expected": "F"}
+        {"input": "4\n", "expected": "Even"},
+        {"input": "7\n", "expected": "Odd"}
     ],
     "Examination_3": [
-        {"input": "5\n", "expected": "15"},
-        {"input": "10\n", "expected": "55"}
+        {"input": "50\n", "expected": "Pass"},
+        {"input": "49\n", "expected": "Fail"}
     ],
     "Examination_4": [
-        {"input": "10\n25\n15\n", "expected": "25"},
-        {"input": "99\n50\n12\n", "expected": "99"}
+        {"input": "85\n", "expected": "A"},
+        {"input": "65\n", "expected": "C"},
+        {"input": "30\n", "expected": "F"}
     ],
     "Examination_5": [
-        {"input": "1500\n", "expected": "1400"},
-        {"input": "800\n", "expected": "800"}
+        {"input": "10\n", "expected": "50"},
+        {"input": "25\n", "expected": "100"},
+        {"input": "65\n", "expected": "0"}
     ]
 }
 
 def is_equal(actual, expected):
-    """
-    ฟังก์ชันตรวจคำตอบแบบยืดหยุ่น:
-    1. ตัดช่องว่าง/ขึ้นบรรทัดใหม่เกินทั้งหน้าและหลัง (.strip())
-    2. ไม่ซีเรียสตัวพิมพ์เล็ก-ใหญ่ (.lower())
-    3. รองรับรูปแบบตัวเลขทศนิยม (เช่น ตอบ 50.0 ให้ถือว่าเท่ากับ 50)
-    """
     clean_actual = actual.strip().lower()
     clean_expected = expected.strip().lower()
     
-    # 1. เปรียบเทียบข้อความโดยตรง
     if clean_actual == clean_expected:
         return True
         
-    # 2. เปรียบเทียบตัวเลข (กรณีเด็กตอบเป็นทศนิยม)
     try:
         if float(clean_actual) == float(clean_expected):
             return True
@@ -68,7 +58,7 @@ def run_tests():
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     text=True,
-                    timeout=5  # ตัดการทำงานอัตโนมัติใน 5 วินาทีหากติด Infinite Loop
+                    timeout=5
                 )
                 stdout, stderr = process.communicate(input=case["input"])
                 
